@@ -7,23 +7,21 @@ import Logo from "./components/logo/Logo";
 import ImageLinkForm from "./components/imagelinkform/ImageLinkForm";
 import Rank from "./components/rank/Rank";
 import FaceRecognition from "./components/facerecognition/FaceRecognition";
+import Signin from "./components/signin/Signin";
+import Register from "./components/register/Register";
 import { particleOptions } from "./particleOptions";
 import Clarifai from "clarifai";
 import "tachyons";
 
 const App = () => {
   const particlesInit = async (main) => {
-    console.log(main);
-
     // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
     // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
     // starting from v2 you can add only the features you need reducing the bundle size
     await loadFull(main);
   };
 
-  const particlesLoaded = (container) => {
-    console.log(container);
-  };
+  const particlesLoaded = (container) => {};
 
   const app = new Clarifai.App({
     apiKey: process.env.REACT_APP_API_KEY,
@@ -32,6 +30,8 @@ const App = () => {
   const [input, setInput] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [box, setBox] = useState({});
+  const [route, setRoute] = useState("signin");
+  const [isSignedIn, setIsSignedIn] = useState(false);
 
   const calculateFaceLocation = (responseData) => {
     const clarifaiFace =
@@ -52,7 +52,6 @@ const App = () => {
   };
 
   const onInputChange = (event) => {
-    console.log(event.target.value);
     setInput(event.target.value);
   };
 
@@ -64,6 +63,15 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
+  const onRouteChange = (route) => {
+    if (route === "signout") {
+      setIsSignedIn(false);
+    } else if (route === "home") {
+      setIsSignedIn(true);
+    }
+    setRoute(route);
+  };
+
   return (
     <div className="App">
       <Particles
@@ -72,14 +80,22 @@ const App = () => {
         loaded={particlesLoaded}
         options={particleOptions}
       />
-      <Navigation />
-      <Logo />
-      <Rank />
-      <ImageLinkForm
-        onInputChange={onInputChange}
-        onButtonSubmit={onButtonSubmit}
-      />
-      <FaceRecognition box={box} imageUrl={imageUrl} />
+      <Navigation onRouteChange={onRouteChange} isSignedIn={isSignedIn} />
+      {route === "home" ? (
+        <div>
+          <Logo />
+          <Rank />
+          <ImageLinkForm
+            onInputChange={onInputChange}
+            onButtonSubmit={onButtonSubmit}
+          />
+          <FaceRecognition box={box} imageUrl={imageUrl} />
+        </div>
+      ) : route === "signin" ? (
+        <Signin onRouteChange={onRouteChange} />
+      ) : (
+        <Register onRouteChange={onRouteChange} />
+      )}
     </div>
   );
 };
