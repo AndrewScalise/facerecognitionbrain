@@ -26,7 +26,7 @@ const App = () => {
   };
 
   const app = new Clarifai.App({
-    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+    apiKey: process.env.REACT_APP_API_KEY,
   });
 
   const [input, setInput] = useState("");
