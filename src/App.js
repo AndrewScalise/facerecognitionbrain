@@ -66,7 +66,7 @@ const App = () => {
       .predict(Clarifai.FACE_DETECT_MODEL, input)
       .then((response) => {
         if (response) {
-          fetch("http://localhost:3000/image", {
+          fetch("https://facebrainrecognition-app.herokuapp.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

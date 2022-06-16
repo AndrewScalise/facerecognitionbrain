@@ -15,7 +15,7 @@ const Signin = ({ onRouteChange, loadUser }) => {
 
   const onSubmitSignIn = () => {
     console.log(JSON.stringify({ email, password }));
-    fetch("http://localhost:3000/signin", {
+    fetch("https://facebrainrecognition-app.herokuapp.com/signin", {
       method: "post",
       headers: {
         "Content-Type": "application/json",

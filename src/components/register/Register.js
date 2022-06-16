@@ -19,7 +19,7 @@ const Register = ({ onRouteChange, loadUser }) => {
 
   const onSubmitRegister = () => {
     console.log(JSON.stringify({ name, email, password }));
-    fetch("http://localhost:3000/register", {
+    fetch("https://facebrainrecognition-app.herokuapp.com/register", {
       method: "post",
       headers: {
         "Content-Type": "application/json",
